@@ -1,0 +1,416 @@
+\documentclass[letterpaper]{article}
+
+\usepackage[spanish]{babel}				%idioma fuente
+\usepackage[utf8]{inputenc}				%acentos
+\usepackage{amsmath}					%matemáticas
+\usepackage{amsfonts} 					%fuente de matemáticas
+\usepackage{amssymb}
+\usepackage{booktabs}					%Incluir tablas
+\usepackage{graphicx}					%Incluir impagenes
+\usepackage{fancyhdr} 					%encabezados
+\usepackage[lofdepth, lotdepth]{subfig} %colocar varias figuras
+\usepackage{listings}					%pegar códigos de matlab y se vean presentables
+\usepackage{placeins}
+\usepackage{float}
+\usepackage[left=2.54cm,right=2.54cm,top=2.54cm,bottom=2.54cm]{geometry}
+\lstset{language=Scilab, breaklines=true, basicstyle=\footnotesize}
+\lstset{numbers=left, numberstyle=\tiny, stepnumber=1, numbersep=-8pt}
+
+%------------------------ENCABEZADO Y PIE DE PÁGINA-------------------%
+\lhead{Control I}
+\rhead{Poles and zeros found by inspection}
+\lfoot{Depto. de Ingeniería Electrónica}
+\cfoot{\thepage\ de \pageref{LastPage}}
+\rfoot{Instituto Tecnológico de Morelia}
+
+\title{Instituto Tecnológico de Morelia\\
+	{\small DIVISIÓN DE ESTUDIOS PROFESIONALES
+		\\DEPARTAMENTO DE INGENIERÍA ELECTRÓNICA\\CONTROL I\\\vspace*{0.2in} REPORTE DE PRÁCTICA 1}\\ "Poles and zeros found by Inspection"}
+
+\author{
+	\textbf{EQUIPO "Mendoza - Ramírez"} \\\\
+	\textbf{INTEGRANTES:}\\
+	\\ Mendoza Sánchez Alainn Ezzequiel.	14121100 
+	\\ Ramírez Espinosa 	Rodrigo.	14121137 \\\\ 
+	\textbf{Semestre:} \\\\ Agosto-diciembre 2017\\\\ 
+	\textbf{Profesor:} \\\\ M.C. Gerardo Marx Chávez Campos \\\\ 
+	\textbf{Fecha de entrega:} 1 de diciembre de 2017}
+\date{}
+
+\begin{document}
+		\begin{figure}[t]
+			\centering
+			\includegraphics[scale=0.7]{Header}
+		\end{figure}
+		\pagenumbering{gobble}
+		\maketitle
+		\pagebreak
+		\pagenumbering{arabic}
+	
+	\newpage
+	\section*{INTRODUCCIÓN}
+	El objetivo principal de esta práctica es poder obtener una función de transferencia con base en un circuito RL, para posteriormente, analizar esta función por el método de inspección y también por el método algebraico, y una vez realizado esto, obtener la ganancia, los polos y los ceros.\\
+	Posteriormente, se procederá a observar las respuestas en frecuencia, utilizando el software de PSpice de OrCad, esto con motivo de simularlo y evitar errores en las pruebas físicas, además de ser una herramienta que nos ayude a comparar los resultados físicos y verificar que tanto nuestros cálculos, como las simulaciones y las pruebas físicas coincidan o al menos no disten mucho unas de otras.\\
+    Como parte final de esta práctica, se deberán hacer pruebas físicas en el laboratorio, para poder hacer mediciones del factor de tiempo Tau ($ \tau $) y posteriormente hacer un barrido de frecuencia para poder observar su comportamiento.
+	\section*{METODOLOGÍA}
+	\begin{figure*}[h]
+		\centering
+		\includegraphics[scale=.65]{Diag1}
+		\caption{\textbf{Diagrama 1.} Circuito RL a analizar}
+	\end{figure*}
+	\FloatBarrier
+	
+	Con base en el circuito del \textbf{diagrama 1} se obtuvo la función de transferencia por medio del método de inspección y por el método algebraico para obtener la ganancia, los polos y los ceros.\\\\	
+	\textbf{Método de Inspección.}
+	
+	Sabemos que la función de transferencia está dada por:
+	
+	\begin{equation}
+	H_s=\frac{Vout_{(s)}}{Vin_{(s)}}=G_0\frac{1+s/w_{z1}}{1+s/w_{p1}}
+	\end{equation}
+	\FloatBarrier
+	
+	Para obtener la ganancia $ G_0 $, debemos analizar el circuito en corriente directa, donde el inductor se comportará como un corto circuito dejando la resistencia R2 en paralelo en R3. Entonces por medio de un divisor de voltaje obtendremos:
+	
+	\begin{equation}
+	Vout_{s}=Vin_s\frac{R2//R3}{(R2//R3)+R1}
+	G_0=\frac{Vout_{(s)}}{Vin_{(s)}}=\frac{R2//R3}{(R2//R3)+R1}
+	\end{equation}
+	\FloatBarrier
+	
+	Ahora bien, para obtener los ceros, que son la parte del numerador en la \textbf{Ecuación (1)}, debemos de tomar la rama que afecta a la frecuencia que es la del inductor junto con la resistencia R2 e igualarla a cero. Debemos tomar en cuenta que todo el circuito debe estar convertido a Laplace, en donde las resistencias son las mismas pero el inductor cambia a ser \textbf{sL1}. Entonces, tenemos:
+	
+	\begin{equation*}
+	R2+sL1=0
+	\end{equation*}
+	\FloatBarrier
+	
+	Dividimos todo entre R2 para que se asemeje al númerador de \textbf{(1)}:
+	
+	\begin{equation*}
+	\frac{R2}{R2}+\frac{sL1}{R2}=0
+	\end{equation*}
+	\begin{equation}
+	1+\frac{sL1}{R2}=0
+	\end{equation}
+	\FloatBarrier
+	
+	Igualamos el numerador de \textbf{(1)} con \textbf{(3)} para obtener el equivalente de $ w_{z1} $:
+	
+	\begin{equation*}
+	1+\frac{sL1}{R2}=1+s/w_{z1}
+	\end{equation*}
+	\begin{equation*}
+	s/w_{w1}=1-1+\frac{sL1}{R2}
+	\end{equation*}
+	\begin{equation*}
+	w_{z1}=\frac{sR2}{sL1}
+	\end{equation*}
+	\begin{equation}
+	w_{z1}=\frac{R2}{L1}
+	\end{equation}
+	\FloatBarrier	
+	
+	Al final, para obtener los polos, que son parte del denominador de \textbf{(1)}, nos basamos en el tiempo de respuesta \textbf{$ \tau $} del circuito, que es:
+	
+	\begin{equation}
+	\tau=\frac{L}{R}
+	\end{equation}
+	\FloatBarrier
+	
+	Donde \textbf{R} es la resistencia equivalente del circuito.
+	La resistencia equivalente se puede obtener por el equivalente de Thevenin a partir del inductor, en donde tendríamos la resistencia R2 en serie con R1 y R3 en paralelo, sabiendo que la fuente de voltaje se comporta como un cortocircuito. Es decir, tendríamos:
+	
+	\begin{equation*}
+	R_{eq}=R2+(R1//R3)
+	\end{equation*}
+	\FloatBarrier
+	
+	La definición de polo está dada por el inverso de tiempo de respuesta $ \tau $, es decir:
+	
+	\begin{equation}
+	w_{p1}=\frac{1}{\tau}=\frac{r_{eq}}{L}=\frac{R2+(R1//R3)}{L1}
+	\end{equation}
+	\FloatBarrier
+	
+	Ahora bien, para obtener la función de transferencia del circuito de la \textbf{diagrama 1}, sustituimos la ganancia de \textbf{(2)}, así como los polos \textbf{(6)} y los ceros \textbf{(5)} en la ecuación \textbf{(1)}:
+	
+	\begin{equation}
+	H_{(s)}=\frac{Vout_{(s)}}{Vin_{(s)}}=\frac{R2//R3}{(R2//R3)+R1}*\frac{1+sL1/R2}{1+sL1/(R2+(R1//R3))}
+	\end{equation}
+	\FloatBarrier
+	
+	\textbf{Método Algebraico}
+	
+	Para realizar el método algebraico, se tiene que transformar todo el circuito a Laplace, de manera que se tiene que simplificar a su máxima expresión la función de transferencia, es decir \textbf{$ H_{(s)} $}
+	
+	\begin{equation*}
+	H_{(s)}=\frac{Vout_{(s)}}{Vin_{(s)}}
+	\end{equation*}
+	\begin{equation*}
+	Vout_{(s)}=Vin_{(s)}\frac{\frac{R2R3+sL1R3}{R2+sL1+R3}}{R1+\frac{R2R3+sL1R3}{R2+sL1+R3}}
+	\end{equation*}
+	\begin{equation*}
+	\frac{Vout_{(s)}}{Vin_{(s)}}=\frac{\frac{R2R3+sL1R3}{R2+sL1+R3}}{\frac{R2R1+sL1R1+R3R1+R2R3+sL1R3}{R2+sL1+R3}}
+	\end{equation*}
+	\begin{equation*}
+	H_{(s)}=\frac{R2R3+sL1R3}{R2R1+sL1R1+R3R1+R2R3+sL1R3}
+	\end{equation*}
+	\FloatBarrier
+		
+	O bien:
+	
+	\begin{equation}
+	H_{(s)}=\frac{R2R3+sL1R3}{R2R1+R3R1+R2R3+s(L1R1+L1R3)}
+	\end{equation}
+	\FloatBarrier	
+	
+	\section{RESULTADOS}
+	
+	Se les dieron valores a los componentes del circuito del \textbf{diagrama 1}. $ R1=1K\Omega $, $ R2=1K\Omega $, $ R3=1K\Omega $ y $ L1=4.25mH $, con una señal cuadrada de 5Vpp.
+	
+	\begin{figure*}[h]
+		\centering
+		\includegraphics[scale=.7]{Diag2}
+		\caption{\textbf{Diagrama 2.} Circuito RL a analizar con valores propuestos.}
+	\end{figure*}
+	\FloatBarrier
+
+	Al introducir estos valores a la función de transferencia \textbf{(8)}, obtuvimos:
+	
+	\begin{equation*}
+	H_{(s)}=\frac{Vout_{(s)}}{Vin_{(s)}}=\frac{1,000,000+4.25s}{3,000,000+8.5s}
+	\end{equation*}
+	\FloatBarrier
+	
+	La señal de entrada fue propuesta de 5Vpp, por lo que la señal escalón fue de 5:
+	
+	\begin{equation}
+	Vout_{(s)}=\frac{5}{s}*\frac{1,000,000+4.25}{3,000,000+8.5s}=\frac{1}{s}*\frac{5,000,000+21.25s}{3,000,000+8.5s}
+	\end{equation}
+	\FloatBarrier	
+	
+	Al introducir los valores de la ecuación \textbf{(9)} al código desarrollado por nosotros dentro de Scilab obtuvimos los siguientes valores con su respectiva gráfica.
+	\begin{lstlisting}
+	clear all
+	clc
+	s=poly(0,"s");
+	disp('En base a la ecuacion:');   //Arrojar a la pantalla "En base a la ecuacion"
+	disp('Ys=(1/s)*(((b*s)+c)/((d*s)+a))');   //Ecuacion para identificar a, b y c
+	a=input('Ingrese el numero correspondiente a:');  //Introdur valor a
+	b=input('Ingrese el numero correspondiente b:');  //Introdur valor b
+	c=input('Ingrese el numero correspondiente c:');  //Introdur valor c
+	d=input('Ingrese el numero correspondiente d:');  //Introdur valor d
+	FT=(c/(a*%s))+(((b/d)-(c/a))/((%s)+a));    //Funcion de transferencia para Y(s)
+	disp('Y(s) simplificado es:');  //Simplificado de la funcion de transferencia
+	disp(FT);   //Mostrar en pantalla la funcion de transferenca simplificada
+	A=(c/(a*%s));   //Guardar en A la primer fraccion parcial
+	B=(((b/d)-(c/a))/((%s)+a));   //Guardar en B la segunda fraccion parcial
+	disp('Y(s) es:');   //Mostrar en pantalla "Y(s) es:"
+	Ys=[A B];   //Guardar en un vector A y B
+	disp(Ys);   //Mostrar en un vector Y(s)
+	t=0:0.0000000001:0.000003;   //t tomara valores del 0 al 20 cada 0.01 valores
+	yt=(c/a)+(((b/d)-(c/a))*exp(-a*t));   //Y(t) sera la salida en funcion del tiempo
+	plot(t,yt)   //Graficar yt con respecto a t
+	title('Respuesta de la funcion de transferencia en el tiempo')//Titulo de la grafica
+	xlabel('Tiempo t')   //Nombre del eje de las "x"
+	ylabel('Y(t)')   //Nombre del eje de las "y"
+	\end{lstlisting}
+		
+	\begin{figure*}[h]
+		\centering
+		\includegraphics[scale=.5]{cod1}
+		\caption{\textbf{Resultado 1.} Resultados arrojados por el código de Scilab al introducir nuestros valores propuestos del circuito del \textbf{diagrama 1}.}
+	\end{figure*}
+	
+	\begin{figure*}[h]
+		\centering
+		\includegraphics[scale=.5]{gra1}
+		\caption{\textbf{Gráfica 1.} Respuesta de la función de transferencia del \textbf{diagrama 2.}}
+	\end{figure*}
+	\FloatBarrier
+
+	Para saber el tiempo de respuesta de la función de transferencia, utilizamos el tiempo $ \tau $ de la fórmula \textbf{(5)}:
+	
+	\begin{equation}
+	\tau=\frac{L}{R}=\frac{L1}{R_{eq}}=\frac{L1}{R2+(R1//R3)}=\frac{425mH}{1.5K\Omega}=2.83{\mu}s
+	\end{equation}
+	\FloatBarrier
+	
+	En la \textbf{gráfica 1} podemos observar que el tiempo de respuesta del circuito coincide con el tiempo de respuesta $ \tau $ calculado en \textbf{(10)} y se empieza a estabilizar la forma de onda.
+	
+	Se usó la herramienta PSpice de OrCad para poder observar el tiempo de respuesta en voltaje y la respuesta en frecuencia de nuestro circuito introduciendo el \textbf{código 2} dentro de un cuadro detexto en PSpice.
+	
+	\begin{figure*}[h]
+		\centering
+		\includegraphics[scale=.5]{cod2}
+		\caption{\textbf{Código 2.} Código introducido en el cuadro de texto dentro de PSpice para simular el circuito de la \textbf{figura 1} con nuestros valores propuestos.}
+	\end{figure*}
+	
+	Al correr el programa pudimos observar la \textbf{gráfica 2} que nos muestra la respuesta en frecuencia en decibeles y en voltaje el $ Vout_{s} $:
+	
+	\begin{figure*}[h]
+		\centering
+		\includegraphics[scale=.5]{gra2}
+		\caption{\textbf{Gráfica 2.} La gráfica superior muestra el comportamiento del voltaje con respecto a la frecuencia y la inferior muestra la respuesta en decibeles con respecto a la frecuencia.} 
+	\end{figure*}
+	\FloatBarrier
+
+	Las gráficas mostradas en la \textbf{gráfica 2}, especialmente la gráfica superior que se puede ver que conforme aumenta, el voltaje disminuye de 2.5 hasta 1.54 aproximadamente, que viene siendo el 63\% del voltaje de salida inicial, que es el tiempo aproximado en el que ocurre el primer tiempo $ \tau $.
+	
+	En la práctica física del circuito se hizo un barrido de frecuencias por décadas de 100Hz a 2MHz, obteniendo así solamente 4 décadas por la limitante del generador de señales, llegando a su tope. A continuación se muestra la tabla de valores que obtuvimos en el laboratorio al realizar el barrido de frecuencia.
+	
+	\begin{table}[h]
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{Hz} & \textbf{V}\\
+			\hline
+			100 & 1.74\\
+			\hline	
+			200 & 1.74\\
+			\hline
+			300 & 1.74\\
+			\hline
+			400 & 1.74\\
+			\hline
+			500 & 1.74\\
+			\hline
+			600 & 1.74\\
+			\hline
+			700 & 1.74\\
+			\hline
+			800 & 1.74\\
+			\hline
+			900 & 1.74\\
+			\hline
+			1,000 & 1.74\\
+			\hline
+			2,000 & 1.74\\
+			\hline
+			3,000 & 1.78\\
+			\hline
+			4,000 & 1.78\\
+			\hline
+			5,000 & 1.78\\
+			\hline
+			6,000 & 1.8\\
+			\hline
+			7,000 & 1.8\\
+			\hline
+			8,000 & 1.82\\
+			\hline
+			9,000 & 1.82\\
+			\hline
+			10,000 & 1.82\\
+			\hline
+			20,000 & 1.9\\
+			\hline
+			30,000 & 2.02\\
+			\hline
+			40,000 & 2.14\\
+			\hline
+			50,000 & 2.22\\
+			\hline
+			60,000 & 2.3\\
+			\hline
+			70,000 & 2.38\\
+			\hline
+			80,000 & 2.42\\
+			\hline
+			90,000 & 2.48\\
+			\hline
+			100,000 & 2.5\\
+			\hline
+			200,000 & 2.62\\
+			\hline
+			300,000 & 2.64\\
+			\hline
+			400,000 & 2.56\\
+			\hline
+			500,000 & 2.52\\
+			\hline
+			600,000 & 2.42\\
+			\hline
+			700,000 & 2.34\\
+			\hline
+			800,000 & 2.28\\
+			\hline
+			900,000 & 2.22\\
+			\hline
+			1,000,000 & 2.14\\
+			\hline
+			2,000,000 & 1.72\\
+			\hline
+			3,000,000 & 1.42\\
+			\hline
+			4,000,000 & 1.14\\	
+			\hline
+		\end{tabular}
+	\caption*{\textbf{Tabla 1.} Valores recolectados del barrido de frecuencia en el circuito físico.}
+	\end{table}
+	\FloatBarrier
+
+	\begin{figure*}[h]
+		\centering
+		\includegraphics[scale=.9]{gra3}
+		\caption{\textbf{Gráfica 3.} Gráfica del comportamiento del voltaje con respecto a la frecuencia ordenado por décadas.}
+	\end{figure*}
+	\FloatBarrier	
+	
+	En la \textbf{gráfica 3} se puede observar cómo su comportamiento se asimila con la gráfica inferior de la \textbf{gráfica 2}.
+	
+	Para que un circuito RC o RL pueda funcionar de manera estable, siempre se toman 5 tiempos $ \tau $ para asegurar que la forma de onda no varíe, esto se implementa en la práctica principalmente. En nuestro caso, nuestro tiempo $ \tau $ fue de 2.83$ \mu $s, entonces este valor es multiplicado por 5 para confirmar su estabilidad:
+	
+	\begin{equation}
+	2.83{\mu}s*5=14.15{\mu}s
+	\end{equation}
+	\FloatBarrier
+	
+	En la \textbf{figura 48} se muestra una gráfica muy parecida a la \textbf{gráfica 1}, que es el tiempo de respuesta de salida de nuestro circuito RL.
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=.09]{41}
+		\caption{Forma de onda del voltaje de salida Vout de nuestro circuito con una amplitud de 2.4V.}
+	\end{figure}
+	\FloatBarrier
+
+	Al multiplicar este valor medido de nuestro circuito por 0.63, que es el 63\% del voltaje en el que la onda se estabilizará, obtenemos un voltaje de 1.512V. Este voltaje se muestra aproximando en la diferencia de voltaje de la \textbf{figura 49}.
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=.09]{44}
+		\caption{Forma de onda del voltaje de salida Vout de nuestro circuito con una amplitud de 2.4V.}
+	\end{figure}
+	\FloatBarrier
+
+	En el punto de medición del tiempo $ \tau $ calculado en \textbf{(10)} en nuestra señal de salida medida, vemos que no se ha estabilizado por completo, esto es mostrado en la \textbf{figura 50} , por lo que se multiplica por 5 para asegurar dicha estabilidad, como ya fue mencionado y mostrado en \textbf{(11)}.
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=.09]{42}
+		\caption{Forma de onda de voltaje de salida Vout de nuestro circuito con una diferencia de tiempo de 2.8$ \mu $s.}
+	\end{figure}
+	\FloatBarrier
+
+	\begin{figure}[h]
+		\centering
+		\includegraphics[scale=.09]{43}
+		\caption{Forma de onda del voltaje de salida Vout de nuestro circuito con una diferencia de tiempo de 14.15$ \mu $s.}
+	\end{figure}
+	\FloatBarrier
+	
+	En la \textbf{Figura 51} se puede observar que en los 5 tiempos $ \tau $, se asegura que nuestra señal se estabiliza.
+	
+	\newpage
+	\section{CONCLUSIONES}
+	
+	\textbf{Mendoza Sánchez Alainn Ezzequiel.  No. de control - 14121100}\\\\	
+	Gracias a esta práctica pudimos darnos cuenta de que la función de transferencia es bastante útil para poder brindarnos la respuesta de salida de casi cualquier sistema.\\
+	Nos dimos cuenta que en el circuito que nosotros empleamos, es decir, un circuito RL, se facilitó más emplear el método de inspección para poder encontrar la función de transferencia. Gracias a este método empleado pudimos observar de manera diferente la función, en otras palabras, gracias a este método pudimos determinar parte por parte la ganancia, los ceros y los polos.\\
+	Otra de las ventajas que tuvimos en esta práctica, es que se hizo uso de varias herramientas para llevarla a cabo, ya que utilizamos el software de PSpice, el cual lo proporciona OrCad, también hicimos uso del software Scilab, y además realizamos físicamente las pruebas en el laboratorio, haciendo uso del inductor, y un osciloscopio, los cuales fueron proporcionados por la caseta de laboratorio.\\
+	
+	\textbf{Ramírez Espinosa Rodrigo. No. de control - 14121137}\\\\	
+	Con la práctica realizada se puede mostrar, demostrar y concluir que la función de transferencia es un modelo que nos permite conocer la respuesta de la salida de cualquier sistema. En el caso particular de nosotros, el cual fue un circuito RL, es más sencillo obtener la función de transferencia por el método de inspección, ya que con este método podemos determinar de manera separada las características que hacen de nuestra función de transferencia, como lo es la ganancia, los polos y los ceros. Por otra parte, podemos hacer uso de varias herramientas para poder comprobar nuestros resultados y tener una mejor perspectiva de lo que esperaremos obtener en la práctica, como en la realizada, que usamos PSpice de Orcad y Scilab.
+\end{document}

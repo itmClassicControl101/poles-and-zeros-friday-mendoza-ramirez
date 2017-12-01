@@ -1,0 +1,31 @@
+
+**** 11/16/17 16:49:14 ***** PSpice 16.6.0 (October 2012) ***** ID# 0 ********
+
+ ;LC circuit for space-states:
+
+
+ ****     CIRCUIT DESCRIPTION
+
+
+******************************************************************************
+
+
+
+V1 Vin GND pulse (0.5, 5V, 0s, 1ns, 1ns, 1ms, 2ms)
+L1 Vin Vout 10uH
+C1 Vput GND 10uF
+RL Vout GND 0.1
+.tran 100us 4ms
+;.tf V(Vout) V1
+.end
+
+ERROR(ORPSIM-15141): Less than 2 connections at node Vput.
+
+ERROR(ORPSIM-15142): Node Vin is floating
+
+ERROR(ORPSIM-15142): Node GND is floating
+
+ERROR(ORPSIM-15142): Node Vout is floating
+
+ERROR(ORPSIM-15142): Node Vput is floating
+
